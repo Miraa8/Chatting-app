@@ -11,12 +11,13 @@ const server = app.listen(process.env.PORT || port, () => {
 let io = new Server(server, { cors: "*" });
 io.on("connection", (socket) => {
   socket.on("sentMsg", (data) => {
-    io.emit("reply", data);
+    let { senderName, message } = data;
+    io.emit("reply", { senderName, message });
   });
-  socket.on("typing",()=>{
-    socket.broadcast.emit("userTyping")
-  })
-  socket.on("stoppedTyping",()=>{
-    socket.broadcast.emit("userStoppedTyping")
-  })
+  socket.on("typing", () => {
+    socket.broadcast.emit("userTyping");
+  });
+  socket.on("stoppedTyping", () => {
+    socket.broadcast.emit("userStoppedTyping");
+  });
 });
