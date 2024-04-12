@@ -1,15 +1,15 @@
 import express from "express";
 import { Server } from "socket.io";
+
 const app = express();
 const port = 3000;
-
-const server = app.listen(process.env.PORT || port, () => {
+const server = app.listen(port, () => {
   console.log("app listening");
 });
-let io = new Server(server, { cors: "*" });
+const io = new Server(server, { cors: "*" });
 io.on("connection", (socket) => {
   socket.on("sentMsg", (data) => {
-    let { senderName, message } = data;
+    const { senderName, message } = data;
     io.emit("reply", { senderName, message });
   });
   socket.on("typing", () => {
